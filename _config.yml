@@ -2,3 +2,5 @@ title: Distributed Randomness
 tagline: Opinions are my own..
 theme: jekyll-theme-slate
 description: Opinions are my own
+github:
+  is_project_page: false
