@@ -5,3 +5,4 @@ description: Opinions are my own
 github:
   is_project_page: false
 minimal_mistakes_skin: "dark" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum" "sunrise"
+show_date: true
