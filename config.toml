@@ -2,6 +2,7 @@ baseURL = 'https://distributed-randomness.github.io/'
 languageCode = 'en-us'
 title = 'Distributed Randomness'
 theme = "solar-theme-hugo"
+publishDir = "docs"
 
 [params]
   scheme = "gray" # light, dark, gray or preference
