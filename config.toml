@@ -1,0 +1,13 @@
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'Distributed Randomness'
+theme = "solar-theme-hugo"
+
+[params]
+  scheme = "gray" # light, dark, gray or preference
+  description = "My random ramblings on everything concerning correct design and implementation of distributed systems."
+
+[menu]
+  [[menu.main]]
+    name = "Blitzerr"
+    url = "https://github.com/blitzerr"
