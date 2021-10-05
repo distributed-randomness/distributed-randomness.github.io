@@ -35,7 +35,7 @@
 &amp;amp;=&amp;amp; (x^2+2)^2 -4x^2 \nonumber \
 &amp;amp;\le&amp;amp;(x^2+2)^2 \nonumber \end{eqnarray}$$
 Some sample rust code
-fn main() { println!(&amp;#34;Hello distributed systems !&amp;#34;); } </description>
+impl&amp;lt;K, V&amp;gt; HashMap&amp;lt;K, V, RandomState&amp;gt; { /// Creates an empty `HashMap`.  ///  /// The hash map is initially created with a capacity of 0, so it will not allocate until it  /// is first inserted into.  ///  /// # Examples  ///  /// ```  /// use std::collections::HashMap;  /// let mut map: HashMap&amp;lt;&amp;amp;str, i32&amp;gt; = HashMap::new();  /// ```  #[inline] #[stable(feature = &amp;#34;rust1&amp;#34;, since = &amp;#34;1.</description>
     </item>
     
   </channel>

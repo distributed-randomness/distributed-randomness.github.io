@@ -65,10 +65,41 @@ y &amp;=&amp; x^4 + 4      \nonumber \<br>
 &amp;\le&amp;(x^2+2)^2    \nonumber
 \end{eqnarray}$$</p>
 <p>Some sample rust code</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-    println<span style="color:#f92672">!</span>(<span style="color:#e6db74">&#34;Hello distributed systems !&#34;</span>);
-}
+<div class="highlight"><pre tabindex="0" style="color:#8a8a8a;background-color:#1c1c1c;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#5f8700">impl</span>&lt;K, V&gt; HashMap&lt;K, V, RandomState&gt; {
+    <span style="color:#00afaf">/// Creates an empty `HashMap`.
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">///
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// The hash map is initially created with a capacity of 0, so it will not allocate until it
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// is first inserted into.
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">///
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// # Examples
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">///
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// ```
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// use std::collections::HashMap;
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// let mut map: HashMap&lt;&amp;str, i32&gt; = HashMap::new();
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// ```
+</span><span style="color:#00afaf"></span>    <span style="color:#5f8700">#[inline]</span>
+    <span style="color:#5f8700">#[stable(feature = </span><span style="color:#00afaf">&#34;rust1&#34;</span><span style="color:#5f8700">, since = </span><span style="color:#00afaf">&#34;1.0.0&#34;</span><span style="color:#5f8700">)]</span>
+    <span style="color:#5f8700">pub</span> <span style="color:#5f8700">fn</span> <span style="color:#0087ff">new</span>() -&gt; <span style="color:#0087ff">HashMap</span>&lt;K, V, RandomState&gt; {
+        <span style="color:#0087ff">Default</span>::default()
+    }
 
+    <span style="color:#00afaf">/// Creates an empty `HashMap` with the specified capacity.
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">///
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// The hash map will be able to hold at least `capacity` elements without
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// reallocating. If `capacity` is 0, the hash map will not allocate.
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">///
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// # Examples
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">///
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// ```
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// use std::collections::HashMap;
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// let mut map: HashMap&lt;&amp;str, i32&gt; = HashMap::with_capacity(10);
+</span><span style="color:#00afaf"></span>    <span style="color:#00afaf">/// ```
+</span><span style="color:#00afaf"></span>    <span style="color:#5f8700">#[inline]</span>
+    <span style="color:#5f8700">#[stable(feature = </span><span style="color:#00afaf">&#34;rust1&#34;</span><span style="color:#5f8700">, since = </span><span style="color:#00afaf">&#34;1.0.0&#34;</span><span style="color:#5f8700">)]</span>
+    <span style="color:#5f8700">pub</span> <span style="color:#5f8700">fn</span> <span style="color:#0087ff">with_capacity</span>(capacity: <span style="color:#af0000">usize</span>) -&gt; <span style="color:#0087ff">HashMap</span>&lt;K, V, RandomState&gt; {
+        HashMap::with_capacity_and_hasher(capacity, <span style="color:#0087ff">Default</span>::default())
+    }
+}
 </code></pre></div></div>
 
 		<p class="meta">Posted on <span class="postdate">03. October 2021</span></p>
