@@ -28,9 +28,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/main'
         with:
-          github_token: ${{ secrets.gh_wf }}
-          external_repository: distributed-randomness/distributed-randomness.github.io
-          publish_dir: ./docs
-          user_name: distributed-randomness
-          user_email: distributed.randomness@gmail.com
-          publish_branch: publish
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
