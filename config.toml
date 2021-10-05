@@ -3,6 +3,9 @@ languageCode = 'en-us'
 title = 'Distributed Randomness'
 theme = "solar-theme-hugo"
 publishDir = "docs"
+pygmentsCodefences = true
+pygmentsCodefencesGuessSyntax = true
+pygmentsStyle = "solarized-dark256"
 
 [params]
   scheme = "gray" # light, dark, gray or preference
