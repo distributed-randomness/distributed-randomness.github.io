@@ -33,7 +33,9 @@
       <guid>https://distributed-randomness.github.io/posts/my-first-post/</guid>
       <description>This is the story about adding $x$ in the pages. $$\begin{eqnarray} y &amp;amp;=&amp;amp; x^4 + 4 \nonumber \
 &amp;amp;=&amp;amp; (x^2+2)^2 -4x^2 \nonumber \
-&amp;amp;\le&amp;amp;(x^2+2)^2 \nonumber \end{eqnarray}$$</description>
+&amp;amp;\le&amp;amp;(x^2+2)^2 \nonumber \end{eqnarray}$$
+Some sample rust code
+fn main() { println!(&amp;#34;Hello distributed systems !&amp;#34;); } </description>
     </item>
     
   </channel>
