@@ -29,6 +29,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          external_repository: distributed-randomness/distributed-randomness.github.io
           publish_dir: ./docs
           user_name: distributed-randomness
           user_email: distributed.randomness@gmail.com
