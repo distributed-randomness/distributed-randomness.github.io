@@ -13,7 +13,28 @@
 		
 		<link rel="stylesheet" href="https://distributed-randomness.github.io/css/colors-gray.min.719642165966f4b324a9ae1755882ec0cb43c76471ba0f1cda94e9271fed85ce.css">
 
-		
+		<head><script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head>
 	</head>
 	<body>
 		<header id="header">
@@ -39,10 +60,32 @@
 				
 	
 		<article class="post">
+			<h1><a href="https://distributed-randomness.github.io/posts/my-third-post/">My Third Post</a> </h1>
+
+			<div class="post-content">
+				<p>Some more content </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">04. October 2021</span></p>
+		</article>
+	
+		<article class="post">
+			<h1><a href="https://distributed-randomness.github.io/posts/my-second-post/">My Second Post</a> </h1>
+
+			<div class="post-content">
+				<p>Some content </p>
+			</div>
+
+			<p class="meta">Posted on <span class="postdate">04. October 2021</span></p>
+		</article>
+	
+		<article class="post">
 			<h1><a href="https://distributed-randomness.github.io/posts/my-first-post/">My First Post</a> </h1>
 
 			<div class="post-content">
-				<p> </p>
+				<p>This is the story about adding $x$ in the pages. $$\begin{eqnarray} y &amp;=&amp; x^4 + 4 \nonumber \
+&amp;=&amp; (x^2+2)^2 -4x^2 \nonumber \
+&amp;\le&amp;(x^2+2)^2 \nonumber \end{eqnarray}$$ </p>
 			</div>
 
 			<p class="meta">Posted on <span class="postdate">03. October 2021</span></p>
