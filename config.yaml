@@ -3,6 +3,10 @@ languageCode: en-us
 theme: hugo-theme-stack
 paginate: 5
 title: Distributed Randomness
+publishDir: "docs"
+pygmentsCodefences: true
+pygmentsCodefencesGuessSyntax: true
+pygmentsStyle: "solarized-dark256"
 
 # Change it to your Disqus shortname before using
 disqusShortname: hugo-theme-stack
