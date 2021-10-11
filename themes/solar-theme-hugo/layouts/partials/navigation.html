@@ -1,9 +1,0 @@
-<nav>
-	{{ range .Site.Menus }}
-		<ul class="nav">
-			{{ range . }}
-				<li><a {{ if eq .Name "Mastodon" }}rel="me" {{ end }}href="{{ .URL }}"><span>{{ .Name }}</span></a></li>
-			{{ end }}
-		</ul>
-	{{ end }}
-</nav>
