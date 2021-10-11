@@ -1,42 +1,10 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Posts on Distributed Randomness</title>
-    <link>https://distributed-randomness.github.io/posts/</link>
-    <description>Recent content in Posts on Distributed Randomness</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 04 Oct 2021 18:03:28 -0700</lastBuildDate><atom:link href="https://distributed-randomness.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>My Third Post</title>
-      <link>https://distributed-randomness.github.io/posts/my-third-post/</link>
-      <pubDate>Mon, 04 Oct 2021 18:03:28 -0700</pubDate>
-      
-      <guid>https://distributed-randomness.github.io/posts/my-third-post/</guid>
-      <description>Some more content</description>
-    </item>
-    
-    <item>
-      <title>My Second Post</title>
-      <link>https://distributed-randomness.github.io/posts/my-second-post/</link>
-      <pubDate>Mon, 04 Oct 2021 18:03:17 -0700</pubDate>
-      
-      <guid>https://distributed-randomness.github.io/posts/my-second-post/</guid>
-      <description>Some content</description>
-    </item>
-    
-    <item>
-      <title>My First Post</title>
-      <link>https://distributed-randomness.github.io/posts/my-first-post/</link>
-      <pubDate>Sun, 03 Oct 2021 14:11:45 -0700</pubDate>
-      
-      <guid>https://distributed-randomness.github.io/posts/my-first-post/</guid>
-      <description>This is the story about adding $x$ in the pages. $$\begin{eqnarray} y &amp;amp;=&amp;amp; x^4 + 4 \nonumber \
-&amp;amp;=&amp;amp; (x^2+2)^2 -4x^2 \nonumber \
-&amp;amp;\le&amp;amp;(x^2+2)^2 \nonumber \end{eqnarray}$$
-Some sample rust code
-impl&amp;lt;K, V&amp;gt; HashMap&amp;lt;K, V, RandomState&amp;gt; { /// Creates an empty `HashMap`.  ///  /// The hash map is initially created with a capacity of 0, so it will not allocate until it  /// is first inserted into.  ///  /// # Examples  ///  /// ```  /// use std::collections::HashMap;  /// let mut map: HashMap&amp;lt;&amp;amp;str, i32&amp;gt; = HashMap::new();  /// ```  #[inline] #[stable(feature = &amp;#34;rust1&amp;#34;, since = &amp;#34;1.</description>
-    </item>
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Distributed Randomness</title><link>https://distributed-randomness.github.io/posts/</link><description>Recent content in Posts on Distributed Randomness</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 04 Oct 2021 18:03:28 -0700</lastBuildDate><atom:link href="https://distributed-randomness.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>My Third Post</title><link>https://distributed-randomness.github.io/posts/my-third-post/</link><pubDate>Mon, 04 Oct 2021 18:03:28 -0700</pubDate><guid>https://distributed-randomness.github.io/posts/my-third-post/</guid><description>Some more content</description></item><item><title>My Second Post</title><link>https://distributed-randomness.github.io/posts/my-second-post/</link><pubDate>Mon, 04 Oct 2021 18:03:17 -0700</pubDate><guid>https://distributed-randomness.github.io/posts/my-second-post/</guid><description>Some content</description></item><item><title>Chinese Test</title><link>https://distributed-randomness.github.io/posts/test-chinese/</link><pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate><guid>https://distributed-randomness.github.io/posts/test-chinese/</guid><description>正文测试 而这些并不是完全重要，更加重要的问题是， 带着这些问题，我们来审视一下学生会退会。 既然如何， 对我个人而言，学生会退会不仅仅是一个重大的事件，还可能会改变我的人生。 我们不得不面对一个非常尴尬的事实，那就是， 可是，即使是这样，学生会退会的出现仍然代表了一定的意义。 学生会退会，发生了会如何，不发生又会如何。 经过上述讨论， 生活中，若学生会退会出现了，我们就不得不考虑它出现了的事实。 学生会退会，到底应该如何实现。 这样看来， 在这种困难的抉择下，本人思来想去，寝食难安。 对我个人而言，学生会退会不仅仅是一个重大的事件，还可能会改变我的人生。 就我个人来说，学生会退会对我的意义，不能不说非常重大。 莎士比亚曾经提到过，人的一生是短的，但如果卑劣地过这一生，就太长了。这似乎解答了我的疑惑。 莫扎特说过一句富有哲理的话，谁和我一样用功，谁就会和我一样成功。这启发了我， 对我个人而言，学生会退会不仅仅是一个重大的事件，还可能会改变我的人生。 学生会退会，到底应该如何实现。 一般来说， 从这个角度来看， 这种事实对本人来说意义重大，相信对这个世界也是有一定意义的。 在这种困难的抉择下，本人思来想去，寝食难安。 了解清楚学生会退会到底是一种怎么样的存在，是解决一切问题的关键。 一般来说， 生活中，若学生会退会出现了，我们就不得不考虑它出现了的事实。 问题的关键究竟为何？ 而这些并不是完全重要，更加重要的问题是。
+奥斯特洛夫斯基曾经说过，共同的事业，共同的斗争，可以使人们产生忍受一切的力量。　带着这句话，我们还要更加慎重的审视这个问题： 一般来讲，我们都必须务必慎重的考虑考虑。 既然如此， 这种事实对本人来说意义重大，相信对这个世界也是有一定意义的。 带着这些问题，我们来审视一下学生会退会。 我认为， 我认为， 在这种困难的抉择下，本人思来想去，寝食难安。 问题的关键究竟为何？ 每个人都不得不面对这些问题。 在面对这种问题时， 要想清楚，学生会退会，到底是一种怎么样的存在。 我认为， 既然如此， 每个人都不得不面对这些问题。 在面对这种问题时， 那么， 我认为， 学生会退会因何而发生。
+引用 思念是最暖的忧伤像一双翅膀
+让我停不了飞不远在过往游荡
+不告而别的你 就算为了我着想
+这么沉痛的呵护 我怎么能翱翔
+最暖的憂傷 - 田馥甄
+图片
+Photo by Florian Klauer on Unsplash
+Photo by Luca Bravo on Unsplash</description></item></channel></rss>
