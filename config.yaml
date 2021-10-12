@@ -38,9 +38,9 @@ params:
         since: 2021
         disclaimer: Opinions are my own. Please take with a few grains of salt.
 
-    dateFormat:
-        published: Oct 2, 2021
-        lastUpdated: Oct 10, 2021 21:07 PST
+    #dateFormat:
+        # published: Oct 2, 2021
+        # lastUpdated: Oct 10, 2021 21:07 PST
 
     sidebar:
         emoji: 
