@@ -1,1 +1,29 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tags on Distributed Randomness</title><link>https://distributed-randomness.github.io/tags/</link><description>Recent content in Tags on Distributed Randomness</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://distributed-randomness.github.io/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>dog</title><link>https://distributed-randomness.github.io/tags/dog/</link><pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate><guid>https://distributed-randomness.github.io/tags/dog/</guid><description/></item><item><title>math</title><link>https://distributed-randomness.github.io/tags/math/</link><pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate><guid>https://distributed-randomness.github.io/tags/math/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Distributed Randomness</title>
+    <link>https://distributed-randomness.github.io/tags/</link>
+    <description>Recent content in Tags on Distributed Randomness</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://distributed-randomness.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dog</title>
+      <link>https://distributed-randomness.github.io/tags/dog/</link>
+      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://distributed-randomness.github.io/tags/dog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>math</title>
+      <link>https://distributed-randomness.github.io/tags/math/</link>
+      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://distributed-randomness.github.io/tags/math/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
