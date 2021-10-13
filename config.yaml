@@ -50,7 +50,7 @@ params:
         avatar:
             enabled: true
             local: true
-            src: img/trees.jpg
+            src: img/nasa_space.jpg
 
     article:
         math: false
@@ -184,7 +184,7 @@ menu:
           pre: home
           params:
               ### For demonstration purpose, the home link will be open in a new tab
-              newTab: true
+              newTab: false
 
 related:
     includeNewer: true
