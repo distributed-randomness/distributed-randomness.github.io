@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
@@ -246,6 +247,8 @@
     </channel>
 </rss>
 =======
+=======
+>>>>>>> 2328bed (generated pages)
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
@@ -273,4 +276,36 @@
         
     </channel>
 </rss>
+<<<<<<< HEAD
 >>>>>>> d64d292 (generated static pages)
+=======
+=======
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Distributed Randomness</title>
+        <link>https://distributed-randomness.github.io/</link>
+        <description>Recent content on Distributed Randomness</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://distributed-randomness.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>My first post</title>
+        <link>https://distributed-randomness.github.io/p/my-first-post/</link>
+        <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://distributed-randomness.github.io/p/my-first-post/</guid>
+        <description>&lt;img src="https://distributed-randomness.github.io/p/my-first-post/yellow_swirl.jpg" alt="Featured image of post My first post" /&gt;</description>
+        </item>
+        <item>
+        <title>My second post</title>
+        <link>https://distributed-randomness.github.io/p/my-second-post/</link>
+        <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://distributed-randomness.github.io/p/my-second-post/</guid>
+        <description>&lt;img src="https://distributed-randomness.github.io/p/my-second-post/strings.jpg" alt="Featured image of post My second post" /&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
+>>>>>>> 3a4b4ae (generated pages)
+>>>>>>> 2328bed (generated pages)
