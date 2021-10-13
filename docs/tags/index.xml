@@ -8,11 +8,11 @@
     <language>en-us</language>
     <lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://distributed-randomness.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>dog</title>
-      <link>https://distributed-randomness.github.io/tags/dog/</link>
+      <title>analysis</title>
+      <link>https://distributed-randomness.github.io/tags/analysis/</link>
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://distributed-randomness.github.io/tags/dog/</guid>
+      <guid>https://distributed-randomness.github.io/tags/analysis/</guid>
       <description></description>
     </item>
     
@@ -22,6 +22,15 @@
       <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
       
       <guid>https://distributed-randomness.github.io/tags/math/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>system</title>
+      <link>https://distributed-randomness.github.io/tags/system/</link>
+      <pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://distributed-randomness.github.io/tags/system/</guid>
       <description></description>
     </item>
     
