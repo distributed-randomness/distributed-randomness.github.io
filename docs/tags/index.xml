@@ -6,6 +6,7 @@
     <description>Recent content in Tags on Distributed Randomness</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+<<<<<<< HEAD
     <lastBuildDate>Tue, 12 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://distributed-randomness.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
 <<<<<<< HEAD
@@ -58,6 +59,9 @@
       <description></description>
     </item>
     
+=======
+    <lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://distributed-randomness.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+>>>>>>> 4eef535 (generating all pages)
     <item>
       <title>analysis</title>
       <link>https://distributed-randomness.github.io/tags/analysis/</link>
