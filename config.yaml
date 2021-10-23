@@ -62,7 +62,7 @@ params:
 
     comments:
         enabled: true
-        provider: disqus
+        provider: utterances
 
         disqusjs:
             shortname:
@@ -72,7 +72,7 @@ params:
             adminLabel:
 
         utterances:
-            repo:
+            repo: distributed-randomness/distributed-randomness.github.io
             issueTerm: pathname
             label:
 
