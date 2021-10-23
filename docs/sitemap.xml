@@ -1,16 +1,68 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+<<<<<<< HEAD
     <loc>https://distributed-randomness.github.io/</loc>
     <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <loc>https://distributed-randomness.github.io/tags/distributed-systems/</loc>
     <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://distributed-randomness.github.io/post/</loc>
     <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://distributed-randomness.github.io/tags/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+=======
+    <loc>https://distributed-randomness.github.io/tags/analysis/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+=======
+    <loc>https://distributed-randomness.github.io/tags/distributed-systems/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+>>>>>>> 095b4f4 (first post draft)
+  </url><url>
+    <loc>https://distributed-randomness.github.io/post/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+  </url><url>
+<<<<<<< HEAD
+    <loc>https://distributed-randomness.github.io/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+>>>>>>> d64d292 (generated static pages)
+  </url><url>
+    <loc>https://distributed-randomness.github.io/p/the-tale-of-the-iron-born/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://distributed-randomness.github.io/tags/verification/</loc>
+    <lastmod>2021-10-12T00:00:00+00:00</lastmod>
+  </url><url>
+=======
+>>>>>>> 4eef535 (generating all pages)
+    <loc>https://distributed-randomness.github.io/about/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://distributed-randomness.github.io/tags/analysis/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://distributed-randomness.github.io/archives/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <loc>https://distributed-randomness.github.io/p/my-second-post/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://distributed-randomness.github.io/page/</loc>
+=======
+    <loc>https://distributed-randomness.github.io/tags/system/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://distributed-randomness.github.io/tags/</loc>
+>>>>>>> d64d292 (generated static pages)
+=======
     <loc>https://distributed-randomness.github.io/tags/</loc>
     <lastmod>2021-10-12T00:00:00+00:00</lastmod>
   </url><url>
@@ -33,6 +85,22 @@
     <lastmod>2021-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://distributed-randomness.github.io/page/</loc>
+>>>>>>> 095b4f4 (first post draft)
+=======
+    <loc>https://distributed-randomness.github.io/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://distributed-randomness.github.io/p/my-second-post/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://distributed-randomness.github.io/page/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://distributed-randomness.github.io/post/</loc>
+    <lastmod>2021-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://distributed-randomness.github.io/tags/</loc>
+>>>>>>> 4eef535 (generating all pages)
     <lastmod>2021-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://distributed-randomness.github.io/categories/</loc>
@@ -40,3 +108,6 @@
     <loc>https://distributed-randomness.github.io/search/</loc>
   </url>
 </urlset>
+=======
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url><loc>https://distributed-randomness.github.io/about/</loc><lastmod>2021-10-10T00:00:00+00:00</lastmod></url><url><loc>https://distributed-randomness.github.io/tags/analysis/</loc><lastmod>2021-10-10T00:00:00+00:00</lastmod></url><url><loc>https://distributed-randomness.github.io/archives/</loc><lastmod>2021-10-10T00:00:00+00:00</lastmod></url><url><loc>https://distributed-randomness.github.io/</loc><lastmod>2021-10-10T00:00:00+00:00</lastmod></url><url><loc>https://distributed-randomness.github.io/p/my-second-post/</loc><lastmod>2021-10-10T00:00:00+00:00</lastmod></url><url><loc>https://distributed-randomness.github.io/page/</loc><lastmod>2021-10-10T00:00:00+00:00</lastmod></url><url><loc>https://distributed-randomness.github.io/post/</loc><lastmod>2021-10-10T00:00:00+00:00</lastmod></url><url><loc>https://distributed-randomness.github.io/tags/</loc><lastmod>2021-10-10T00:00:00+00:00</lastmod></url><url><loc>https://distributed-randomness.github.io/categories/</loc></url><url><loc>https://distributed-randomness.github.io/search/</loc></url></urlset>
+>>>>>>> 6127092 (minified)
