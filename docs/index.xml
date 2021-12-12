@@ -1,1 +1,214 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Distributed Randomness</title><link>https://distributed-randomness.github.io/</link><description>Recent content on Distributed Randomness</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://distributed-randomness.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>My second post</title><link>https://distributed-randomness.github.io/p/my-second-post/</link><pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate><guid>https://distributed-randomness.github.io/p/my-second-post/</guid><description>&lt;img src="https://distributed-randomness.github.io/p/my-second-post/strings.jpg" alt="Featured image of post My second post" /></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Distributed Randomness</title><link>https://distributed-randomness.github.io/</link><description>Recent content on Distributed Randomness</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 10 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://distributed-randomness.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>My second post</title><link>https://distributed-randomness.github.io/p/my-second-post/</link><pubDate>Sun, 10 Oct 2021 00:00:00 +0000</pubDate><guid>https://distributed-randomness.github.io/p/my-second-post/</guid><description>&lt;img src="https://distributed-randomness.github.io/p/my-second-post/strings.jpg" alt="Featured image of post My second post" /></description></item><item><title/><link>https://distributed-randomness.github.io/p/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://distributed-randomness.github.io/p/</guid><description>&lt;p>+++
+author = &amp;ldquo;Blitzerr&amp;rdquo;
+title = &amp;ldquo;correct systems: A Proposal&amp;rdquo;
+date = &amp;ldquo;2021-11-21&amp;rdquo;
+description = &amp;ldquo;My musings on implementing correct systems&amp;rdquo;
+image = &amp;quot;&amp;quot;&lt;/p>
+&lt;p>draft = false&lt;/p>
+&lt;p>tags = [&lt;/p>
+&lt;pre>&lt;code>&amp;quot;distributed-systems&amp;quot;,
+&amp;quot;verification&amp;quot;,
+&amp;quot;thoughts&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>]&lt;/p>
+&lt;p>+++&lt;/p>
+&lt;h1 id="problem-statement">Problem Statement&lt;/h1>
+&lt;h1 id="motivation">Motivation&lt;/h1>
+&lt;h1 id="approach">Approach&lt;/h1>
+&lt;h2 id="assumptions">Assumptions&lt;/h2>
+&lt;ol start="3">
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;h3 id="concepts">Concepts&lt;/h3>
+&lt;ol start="4">
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;h3 id="methodology">Methodology&lt;/h3>
+&lt;h4 id="running-example">Running Example&lt;/h4>
+&lt;h3 id="spec">Spec&lt;/h3>
+&lt;p>​&lt;/p>
+&lt;h1 id="results">Results&lt;/h1>
+&lt;h1 id="comments">Comments&lt;/h1>
+&lt;h1 id="references">References&lt;/h1></description></item><item><title/><link>https://distributed-randomness.github.io/p/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://distributed-randomness.github.io/p/</guid><description>&lt;p>+++
+author = &amp;ldquo;Blitzerr&amp;rdquo;
+title = &amp;ldquo;The fleet of systems forged in Iron&amp;rdquo;
+date = &amp;ldquo;2021-11-17&amp;rdquo;
+description = &amp;ldquo;Iron Fleet Paper by Hawblitzel et. al. at SOSP &amp;lsquo;15&amp;rdquo;
+image = &amp;ldquo;ironfleet.jpeg&amp;rdquo;&lt;/p>
+&lt;p>draft = true&lt;/p>
+&lt;p>tags = [&lt;/p>
+&lt;pre>&lt;code>&amp;quot;distributed-systems&amp;quot;,
+&amp;quot;verification&amp;quot;,
+&amp;quot;ironfleet&amp;quot;
+&lt;/code>&lt;/pre>
+&lt;p>]&lt;/p>
+&lt;p>+++&lt;/p>
+&lt;h1 id="problem-statement">Problem Statement&lt;/h1>
+&lt;p>In &lt;a class="link" href="https://www.andrew.cmu.edu/user/bparno/papers/ironfleet.pdf" target="_blank" rel="noopener"
+>this&lt;/a> paper, the authors present an approachst for building a practical distributed system in a provably correct way. They do it incrementally by writing a spec, then a host level protocol and then the inside host implementation, where each step refine the one that comes before it. Before this, most verifications concerned them with part of the protocol but not the whole system. This is huge because this means that it is finally possible to write bug free system with acceptable performance. Separating the spec and the protocol from the implementation helps in dealing with the right abstractions. What it means that we don&amp;rsquo;t have to handle integer overflows and the spec layer and we can deal with all sorts optimizations can come in the implementation phase. Using Dafny, guarantees that the actual implementation never deviates from the claims made by the spec by making sure that the preconditions, post conditions and invariants hold at level.&lt;/p>
+&lt;h1 id="motivation">Motivation&lt;/h1>
+&lt;p>We have been writing systems for a very long time now. When we started doing so, just havin this automation was a luxury. So people were okay, when we brushed off a bug (or a few) as a &amp;ldquo;glitch&amp;rdquo; in the system. But over time, these have become more and more critical. Computer systems are no longer alternatives, they are THE way to do a lot of things. When we wire money to someone, we want the exact amout to be deducted and only once, And guess what when we want the server to push a message to that robot to inject insulin into our grandma, we want the exact dose to be dispensed, because, guess what, applying injection is not idempotent. The exactly once gurantee, or the lack thereof, can be the difference between life and death.&lt;/p>
+&lt;p>Therefore, it is imporant that any and all mission critical systems work correct way&lt;/p>
+&lt;h1 id="approach">Approach&lt;/h1>
+&lt;h2 id="assumptions">Assumptions&lt;/h2>
+&lt;p>We should always start with the assumptions we are making for our view of the world. IronFleet also makes certain assumptions:&lt;/p>
+&lt;ol>
+&lt;li>There are axioms that lead to the proof. What I mean is that there are parts, rather small, of the system that are assumed to be correct. In practice this is not a big deal for a system in practice. This means that developers have a very focused piece to direct all their attention to - the unproven code. As long as that is kept small enough, we are fine.&lt;/li>
+&lt;li>The system assumes the network to not tamper with packets. For most practical purposes this is fine as we can use checksumming etc. to guard against it.&lt;/li>
+&lt;li>They assumed the correctness of their compiler. That&amp;rsquo;s okay, I guess.&lt;/li>
+&lt;/ol>
+&lt;h3 id="concepts">Concepts&lt;/h3>
+&lt;p>The actual proof builds on top of three fundamental concepts:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>State Machine refinement.&lt;/p>
+&lt;blockquote>
+&lt;p>State machine &lt;em>L&lt;/em> refines &lt;em>H&lt;/em> if each of &lt;em>L&lt;/em>’s possible &lt;em>behaviors&lt;/em>, i.e., each (potentially infinite) sequence of states the machine may visit,&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Floyd-Hoare Verification&lt;/p>
+&lt;blockquote>
+&lt;p>A tool that allows the programmer to annotate a program with assertions about the program’s state, and the verifier checks that the assertions hold true for all possible program inputs&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Reductions&lt;/p>
+&lt;blockquote>
+&lt;p>The concept that two steps can swap places in the behavior if swapping them has no effect on the execution’s outcome&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Temporal Logic Of Actions&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="methodology">Methodology&lt;/h3>
+&lt;h4 id="key-points">Key points&lt;/h4>
+&lt;ol>
+&lt;li>Break down the large problem into layers&lt;/li>
+&lt;li>Define the transition within a layer&lt;/li>
+&lt;li>Tie some states of the layer with the some states of the layer below it.&lt;/li>
+&lt;/ol>
+&lt;p>The crux of the proof lies in very meticulously definiting the right set of abstractions, each layering on top of the other or the lower layer refining the top one such that together we have a verified system that performs its operations efficiently.&lt;/p>
+&lt;p>&lt;figure
+class="gallery-image"
+style="
+flex-grow: 156;
+flex-basis: 376px"
+>
+&lt;a href="https://distributed-randomness.github.io/p/overview.jpg" data-size="900x574">
+&lt;img src="https://distributed-randomness.github.io/p/overview.jpg"
+width="900"
+height="574"
+srcset="https://distributed-randomness.github.io/p/overview_hu7fba9da1679ce4a56c592454604cb9c1_209056_480x0_resize_q75_box.jpg 480w, https://distributed-randomness.github.io/p/overview_hu7fba9da1679ce4a56c592454604cb9c1_209056_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="overview">
+&lt;/a>
+&lt;figcaption>overview&lt;/figcaption>
+&lt;/figure>&lt;/p>
+&lt;p>&lt;em>We use TLA style verification to prove that any behavior of the protocol layer (e.g., P0*&amp;hellip;&lt;em>P3) refines some behavior of the high-level spec (e.g., H0&lt;/em>&amp;hellip;&lt;em>H4). We then use Floyd-Hoare style to prove that any behavior of the implementation (e.g., I0&lt;/em>&amp;hellip;*I3) refines a behavior of the protocol layer.&lt;/em>&lt;/p>
+&lt;h4 id="running-example">Running Example&lt;/h4>
+&lt;p>Our running example is going to be of a lock server. The server coordinates the access to the lock between the clients. The system state is modelled as the history of lock ownership at any given epoch. So, if you query the state of the system at epoch-n, the system will tell you which host owned the lock then. One would realize that the history and therefore by extension, the state is ever growing and a new step is arrived at by appending to the history the owner of the lock in the new epoch.&lt;/p>
+&lt;p>An implementation is considered consistent with the spec, if the n-th host is the sender of all the lock messages in the epoch-n. This is something that I don&amp;rsquo;t understand very clearly. If the spec already knew the host that is going to send all the lock messages in the epoch-n, then the spec is sort of predicting every move of the system. But that is not how I think of the system. To, me one or many host would want the lock at an epoch and the implementation will grant it one of the asking hosts. The spec should make sure that the System invariant is held during that passing along of the lock - usually for a locking system, it is that there should not be two owners of the lock at any given point of time.&lt;/p>
+&lt;p>There are usually two aspects to this. The lock server is distributed, so a quorum of the nodes forming the server has to agree who is the owner of the lock at any given point of time, in the face of fail-stop failures and grey failures, slow server gc pauses, os scheduling and the like. Then there is client side of it. I think teh toy example considered in the paper is client centric.&lt;/p>
+&lt;h3 id="spec">Spec&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="c1">// The spec is usually modelled as a state transition and therefore, we start with the state of the system.
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="n">datatype&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpecState&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpecState&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">history&lt;/span>:&lt;span class="nc">seq&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">HostId&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">// Initial state of the system. This is the starting point. You start here and you apply the rules of transitions to get to the next state and continue.Usually, the movement happens based on certain actions that are performed on the stytem. The actions are usually the API calls on the system or background jobs that can lead to a state transition. A system would evlaute
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="n">predicate&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpecInit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ss&lt;/span>:&lt;span class="nc">SpecState&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="n">ss&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">history&lt;/span>&lt;span class="o">|==&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ss&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">history&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">in&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">AllHostIds&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="n">predicate&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpecNext&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ss_old&lt;/span>:&lt;span class="nc">SpecState&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">ss_new&lt;/span>:&lt;span class="nc">SpecState&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">exists&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">new_holder&lt;/span>&lt;span class="w"> &lt;/span>:: &lt;span class="nc">new_holder&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">in&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">AllHostIds&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ss_new&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">history&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ss_old&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">history&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">new_holder&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">// This is very important relation as it ties a spec state to a state of the implemntation. The number of steps in a layer does not have to be equal to the steps in the layer below but these are the validation points where we determine that the implementation adheres to the protocol and the protocol adheres to the spec.
+&lt;/span>&lt;span class="c1">// So, say we have a structure called
+&lt;/span>&lt;span class="c1">// Msg {
+&lt;/span>&lt;span class="c1">// // If this message is about requesting a lock.
+&lt;/span>&lt;span class="c1">// lock,
+&lt;/span>&lt;span class="c1">//. The epoch for this message. The epoch is imporpant as that&amp;#39;s how we index into the history or the state of the system in the spec.
+&lt;/span>&lt;span class="c1">// epoch,
+&lt;/span>&lt;span class="c1">//. // The sender of the message.
+&lt;/span>&lt;span class="c1">// src,
+&lt;/span>&lt;span class="c1">//}
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">// The relation simply states the all the messages regarding a lock that are sent from the host that the history calls out as the owner of lock. This is a circular dependency to me, wecannot obtain the history by
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="n">predicate&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SpecRelation&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">is&lt;/span>:&lt;span class="nc">ImplState&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">ss&lt;/span>:&lt;span class="nc">SpecState&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">forall&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="w"> &lt;/span>:: &lt;span class="nc">p&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">in&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">is&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">sentPackets&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">msg&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="o">?&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">src&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ss&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">history&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">msg&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">epoch&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>​ &lt;em>The lock server specification&lt;/em>&lt;/p>
+&lt;h3 id="the-protocol-layer">The Protocol Layer&lt;/h3>
+&lt;p>This layer models independent hosts communicating with each other through messages over the network. The state of the system is defined as the N hosts that are trying to acquire the lock and the set of all messages that were ever transferred among them. The state transition what is considered as a step of the system. In the protocol layer, a step is taken by the system, when one of the many hosts, reads the messages in its input buffer, does some computation and emits the output as other network messages to other hosts in the system. a step is considered to be atomic and therefore the reading of messages, doing some computation based on them and sending the messages out is considered one single atomic step.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="n">State&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// This representation of the state pertains to which epoch.
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">epoch&lt;/span>: &lt;span class="nc">Number&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// The lock owner in this epoch.
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">host&lt;/span>: &lt;span class="nc">id&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// A lock exchange happens over two messages both seen from the
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// reference of the lock owner. The send packet is the grant the lock
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// and followed by a receive message to the initial sender accepting
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// the grant. A successful exchange of the lock should lead to the
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// system taking a step, which is signified as an increment of the
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// epoch.
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">spck&lt;/span>: &lt;span class="nc">Msg&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">rpck&lt;/span>: &lt;span class="nc">Msg&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="n">History&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">states&lt;/span>: &lt;span class="p">[&lt;/span>&lt;span class="n">State&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="k">struct&lt;/span> &lt;span class="nc">Msg&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">transfer&lt;/span>: &lt;span class="kt">bool&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">lock&lt;/span>: &lt;span class="kt">bool&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">sendr&lt;/span>: &lt;span class="nc">id&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">recvr&lt;/span>: &lt;span class="nc">id&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">epoch&lt;/span>: &lt;span class="nc">Number&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="n">Actions&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Grant&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Accept&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="c1">// A transiion determines the legality of a step. So given the
+&lt;/span>&lt;span class="c1">// transition rules, one can ask the question that given the
+&lt;/span>&lt;span class="c1">// current state of the system (S) and the action (A) performed
+&lt;/span>&lt;span class="c1">// on it, is the next state (S&amp;#39;) legal. As one can guess the
+&lt;/span>&lt;span class="c1">// answer to this is boolean and therefore modelled as a
+&lt;/span>&lt;span class="c1">// predicate.
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="n">Transitions&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// At the given epoch, can the lock be granted by the from
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// from_host to the to_host.
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// The logical answer is, if the from owned the lock in that
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// epoch, then it can grant it to the to_host.
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Grant&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">epoch&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">from&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">?&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">State&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">curr_owner&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">spck&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">_&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">state&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">epoch&lt;/span>&lt;span class="p">];&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Only the owner of the lock can grant it
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">spck&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">epoch&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">epoch&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">curr_owner&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">from&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// the from host owns the lock as confirmed from the system state history.
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">curr_owner&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">!=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// The requester didn&amp;#39;t already have the lock
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">spck&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">transfer&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">?&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// This was a lock transfer request
+&lt;/span>&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">spck&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">sendr&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">from&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">spck&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">recvr&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">},&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Accept&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">epoch&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">from&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="connecting-the-layers">Connecting the Layers&lt;/h2>
+&lt;p>The layers are connected using a refinement function. This takes a state of the protocol and returns a state of the Spec. Then we prove that the protocol refines the Spec by induction. We show that it holds true for the init state and then we show that it&lt;/p>
+&lt;h3 id="the-implementation-layer">The Implementation Layer&lt;/h3>
+&lt;p>In Iron fleet, this is where we write the abstraction free and runnable imperative code. One limitation the paper talks about is that the code should be single threaded. The paper uses Dafny for this purpose.&lt;/p>
+&lt;p>The key is to prove that the implementation adheres to the protocol layer. This is easier as there is one to one correspondence between the host protocol state and the implementaion state. In other word a step in the implementation layer represents one step in the protocol layer. we know that the state of the distributed-system is the state of all the &amp;lsquo;N&amp;rsquo; hosts combined. But based on how we defined the state transitionon of the overall system - a step taken by any of the N hosts corresponds to a step taken by the ststem as a whole and steps are atomic and no two hosts takes step at the same time. One might ask how can we gurantee that in a distributed system, no two hosts, take a step at the same time. This is addressed by what is deemed as a legal step. The stystem takes a step when there is a lock exchange. Now the two actions/messages that lead to it are the grant and accept. Now rememeber that the grant can only be successful if the granting host is the owner of the lock at that time. We have meticulously verified that the system, till that point holds the invariant - that there is only one owner of the lock at that time. So, there is only a single host that can successfully grant a lock And because the granting host, will send the grant message to only one host in a given epoch, the next owner of the host will also be unique for that epoch.&lt;/p>
+&lt;p>This reasoning only supports the one part of the system state - the state of all the hosts. There is another state variable - all the messages that were ever sent over the network.&lt;/p>
+&lt;h3 id="looking-for-atomacity--try-reduction">looking for atomacity ? Try Reduction&lt;/h3>
+&lt;h1 id="results">Results&lt;/h1>
+&lt;h1 id="comments">Comments&lt;/h1>
+&lt;h1 id="references">References&lt;/h1></description></item></channel></rss>
