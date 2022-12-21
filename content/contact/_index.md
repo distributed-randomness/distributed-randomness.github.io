@@ -6,4 +6,4 @@ description=""
 date=2022-12-20
 +++
 
-Reach me at j@distributedrandomness.com.
+Reach me at j a-t distributedrandomness
