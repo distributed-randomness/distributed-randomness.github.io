@@ -1,0 +1,14 @@
+{% macro copyright() %}
+    {%- if config.extra.copyright -%}
+        <div class="copyright copyright--user">{{ config.extra.copyright | safe }}</div>
+    {%- else -%}
+        <div class="copyright">
+            <span>© {{ now() | date(format="%Y") }} Blitzerr::</a></span>
+            <span> >> Opinions Are My Own << </a></span>
+        </div>
+    {%- endif -%}
+{% endmacro copyright %}
+
+{% macro script() %}
+    <script type="text/javascript" src="{{ get_url(path="assets/js/main.js") }}"></script>
+{% endmacro script %}

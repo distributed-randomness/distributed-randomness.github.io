@@ -1,0 +1,24 @@
+{% extends "index.html" -%}
+
+{%- block title %}
+    <title>{{ section.title }} - {{ config.extra.author }}</title>
+    {# TODO: make some kind of social media linking, i guess? #}
+    {#%- include "snippets/social.html" %#}
+{%- endblock title -%}
+
+{%- block main -%}
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="{{ section.permalink  }}">{{ section.title }}</a>
+            </h1>
+            {{ posts::section_meta(section=section, author=config.extra.show_author) }}
+        </header>
+
+        {#- Skipping logic for cover as was in original Terminal theme -#}
+
+            {{ section.content | safe }}
+        {# TODO: Decide if any sort of commenting functionality is desired? #}
+        {#%- include "snippets/comments.html"  -%#}
+    </article>
+{%- endblock main -%}
