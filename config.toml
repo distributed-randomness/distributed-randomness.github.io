@@ -104,7 +104,8 @@ logo_home_link = "/"
 # NOTE: `$BASE_URL/` must be included in the url name.
 main_menu = [
               {url="/about/", name="about"},
-              {url="/contact/", name="contact"},
+              {url="/contact/", name="contact"}
+              
 ]
 
 # Displayed as title of drop-down menu when size of main_menu > show_menu_items.
