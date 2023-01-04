@@ -25,7 +25,7 @@ theme = "zerm"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
-minify_html = true
+minify_html = false
 
 # Built in taxonomies of zerm.
 taxonomies = [
