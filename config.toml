@@ -104,7 +104,8 @@ logo_home_link = "/"
 # NOTE: `$BASE_URL/` must be included in the url name.
 main_menu = [
               {url="/about/", name="about"},
-              {url="/contact/", name="contact"}
+              {url="/contact/", name="contact"},
+              {url="/conferences-2023/", name="conferences"}
               
 ]
 
