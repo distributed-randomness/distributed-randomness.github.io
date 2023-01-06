@@ -25,6 +25,8 @@ theme = "zerm"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
+
+# This option does not work with the cloudflare pages which uses zola 0.13.0.
 minify_html = false
 
 # Built in taxonomies of zerm.

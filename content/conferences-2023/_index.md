@@ -5,11 +5,17 @@ date = 2023-01-03
 updated = 2023-01-03
 +++
 
+## Conferences This Month
+
 |Category|Name|Date|
 |---|---|---|
 |OS	|CIDR	|January	8|
 |Theory	|SODA	|January	15|
 |PL/Veri	|POPL	|  	January	15|
+
+## Conferences For the Rest Of the Year
+|Category|Name|Date|
+|---|---|---|
 |AI/ML	|AAAI |	February	7|
 |IR	|WSDM |February	27|
 |OS	|ASPLOS	|  	March	25|
