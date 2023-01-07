@@ -1,0 +1,53 @@
+{% import "macros/head.html" as head -%}
+{% import "macros/toc.html" as toc -%}
+{% extends "index.html" -%}
+
+{%- block math -%}
+  {% if page.extra.math %}
+  {{ head::katex() }}
+  {% endif %}
+{%- endblock math -%}
+
+{%- block title %}
+    <title>{{ page.title }} - {{  config.extra.author }}</title>
+    {# TODO: make some kind of social media linking, i guess? #}
+    {#%- include "snippets/social.html" %#}
+{%- endblock title -%}
+
+{%- block main -%}
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="{{ page.permalink  }}">{{ page.title }}</a>
+            </h1>
+            {{ posts::meta(page=page, author=config.extra.show_author) }}
+            {{ posts::langs(page=page) }}
+
+            {%- block ToC -%}
+                {%- if page.extra.ToC or config.extra.ToC -%}
+                    {{ toc::toc(t=page.toc) }}
+                {%- endif -%}
+            {%- endblock ToC -%}
+        </header>
+
+        {#- Skipping logic for cover as was in original Terminal theme -#}
+
+        {{ page.content | safe }}
+
+        <script src="https://giscus.app/client.js"
+        data-repo="distributed-randomness/distributed-randomness.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkzMTA0ODM4MDg="
+        data-category="General"
+        data-category-id="DIC_kwDOEoGbYM4CTI7I"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="dark_high_contrast"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+            </script>)
+    </article>
+{%- endblock main -%}
