@@ -29,6 +29,35 @@ body {
   }
 }
 
+.sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 160px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: rgb(30, 29, 29); /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+
+  margin: 100;
+  padding: 100;
+  font-family: 'Fira Code', Menlo, DejaVu Sans Mono, Monaco, Consolas, Ubuntu Mono, monospace;
+  font-size: 1rem;
+  line-height: 1.54;
+  // background-color: var(--background);
+  color: var(--color);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-overflow-scrolling: touch;
+  -webkit-text-size-adjust: 100%;
+  font-feature-settings: "liga";
+
+  @media (max-width: $phone-max-width) {
+    font-size: 1rem;
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.3;
 
