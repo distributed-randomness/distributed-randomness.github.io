@@ -2,7 +2,7 @@
 title = "On Structures and Transforms"
 date = 2023-01-03
 updated = 2023-01-03
-draft = true
+draft = false
 in_search_index = true
 template = "page.html"
 
