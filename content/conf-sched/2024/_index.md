@@ -41,3 +41,6 @@ warranty. Consume at your own risk.
 1. [Étienne André 's conference list](https://www.conferences-computer.science)
 1. [Core Ranking for the conferences](https://portal.core.edu.au/conf-ranks/)
 1. [Jeff Huang's best papers in conferences](https://jeffhuang.com/best_paper_awards/)
+1. [AI conference deadline by Papers With
+   Code](https://aideadlin.es/?sub=ML,CV,CG,NLP,RO,SP,DM,AP,KR,HCI)
+
