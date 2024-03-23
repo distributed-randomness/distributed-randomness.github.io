@@ -31,10 +31,13 @@ date = 2024-03-23
 
 
 
-#### Note
-_Disclaimer_ This is not the complete list of conferences just the ones I find interesting. I
+#### _Disclaimer_ 
+This is not the complete list of conferences just the ones I find interesting. I
 distribute this in the hope that someone will find this useful. As usual, it comes with no 
 warranty. Consume at your own risk.
 
+## References
+
+1. [Étienne André 's conference list](https://www.conferences-computer.science)
 1. [Core Ranking for the conferences](https://portal.core.edu.au/conf-ranks/)
-1. [Best papers in conferences](https://jeffhuang.com/best_paper_awards/)
+1. [Jeff Huang's best papers in conferences](https://jeffhuang.com/best_paper_awards/)
