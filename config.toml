@@ -80,7 +80,7 @@ theme_color = "green"
 
 # How many menu items to show on desktop. if you set this to 0, only submenu
 # button will be visible.
-show_menu_items = 2
+show_menu_items = 3
 
 # set theme to full screen width.
 full_width = false
@@ -110,8 +110,8 @@ logo_home_link = "/"
 main_menu = [
               {url="/about/", name="about"},
               {url="/contact/", name="contact"},
-              {url="/conferences-2023/", name="conferences"}
-              
+              {url="/conf-sched/2024", name="conferences"},
+              {url="/conf-sched/2023", name="2023-conferences"}
 ]
 
 # Displayed as title of drop-down menu when size of main_menu > show_menu_items.
