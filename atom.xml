@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Distributed Randomness</title>
+    <subtitle>My musings on random things, especially disributed systems</subtitle>
+    <link href="https://distributedrandomness.com/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://distributedrandomness.com"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-02-20T00:00:00+00:00</updated>
+    <id>https://distributedrandomness.com/atom.xml</id>
+    <entry xml:lang="en">
+        <title>On Shard Placements And Load Balancing (PLB)</title>
+        <published>2023-02-20T00:00:00+00:00</published>
+        <updated>2023-02-20T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://distributedrandomness.com/plb/plb-inner/" type="text/html"/>
+        <id>https://distributedrandomness.com/plb/plb-inner/</id>
+        <content type="html">&lt;p&gt;We use a distributed storage system when the data is too large to fit in a
+single machine or host. The system designer gets around it by partitioning
+the data into manageable chunks called shards or partitions. This is where our
+problems begin. I will not discuss the schemes to partition data but given
+the shards, how we can distribute them among the available hosts. The objective
+would be to drive similar utilization among all the hosts.&lt;&#x2F;p&gt;
+&lt;p&gt;For example, say, I have 100 hosts upholding my cloud storage service. 2
+of them are running at 100% CPU and the rest at 30%. This is a recipe for
+disaster. Now I must remedy the situation. The system cannot route any request
+to any host. The destination must be the one that has data relevant to the
+request. Therefore, one likely reason for this imbalance is that these two
+hosts have the most number of shards (skew in shard assignment) or few of the
+most requested shards. Therefore, shard placement is the key to driving
+uniform utilization. The CPU was an example, the contended resource might be
+memory, IO, or other application-specific metrics. Usually, we do not shoot
+for perfect equality, but rather an optimum band. This is usually application-dependent but something like 50-70% utilization is good. It has enough headroom
+to allow minor peaks while more hosts are added. The other end of the spectrum
+is say, all 100 of my servers are running at 10% CPU. This is an opportunity to
+reduce the host count without impacting the service quality. This will decrease
+the operating cost of the service, which means more profit.&lt;&#x2F;p&gt;
+&lt;p&gt;With this background, I will define the problem more concretely.  My intention
+is to build a general-purpose service, which is responsible for placement and
+load balancing (PLB as a service). To make it a successful service,
+I must arrange all the shards in the minimum possible hosts without violating
+the hard constraints (like a primary and replica cannot be on the same
+host, or&#x2F;and there should be no more than 1 primary replica of a shard or there
+be no more than 3 secondary replicas of a shard) and meeting the provided
+goals (like no host to have  CPU utilization greater than 80%, and&#x2F;or each
+a host should have CPU utilization that is no greater or less than the median
+CPU utilization across all hosts by 10%, and&#x2F; or  the count of the primary replica
+should be balanced across all hosts). At its core, this is a [bin-packing]
+(https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F; Bin_packing_problem), [problem](https:&#x2F;&#x2F;
+developers.google.com&#x2F;optimization&#x2F; pack&#x2F;bin_packing). Bin-packing is &lt;code&gt;NP- hard&lt;&#x2F;code&gt; and the decision problem of whether the number of shards can fit in
+the specified host is &lt;code&gt;NP-complete&lt;&#x2F;code&gt;. I will define the goal in plain
+English but you can refer to the [wikipedia link](https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;
+Bin_packing_problem) for a mathematical treatment.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;At least one host must be used&lt;&#x2F;li&gt;
+&lt;li&gt;Along a dimension, the sum of values of all shards placed in a host, is less than
+the value of the host. A concrete example can be the sum of CPU required by each
+shard placed in a host should not exceed the total CPU available on the host. We
+repeat this for all resources we care about like io, network, and the like.&lt;&#x2F;li&gt;
+&lt;li&gt;We tack on application-specific goals similarly.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;If I formulate this as an optimization problem subject to constraint,
+then I can use a &lt;a href=&quot;https:&#x2F;&#x2F;developers.google.com&#x2F;optimization&#x2F;pack&#x2F;bin_packing&quot;&gt;constraint&lt;&#x2F;a&gt;
+&lt;a href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;good_lp&#x2F;latest&#x2F;good_lp&#x2F;&quot;&gt;solver&lt;&#x2F;a&gt; to find a solution.&lt;&#x2F;p&gt;
+&lt;p&gt;A few things to consider:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The assignment of the shard to the host is dependent on traffic which is time-dependent.
+It is advisable to prefer solutions that are quick to compute and advances a few
+steps at a time. Solving for the full optimization might take a long time by
+which the solution might be irrelevant.&lt;&#x2F;li&gt;
+&lt;li&gt;The moves to dissipate heat are not free. They create more churn shortly. This
+is expected to stabilize over time.&lt;&#x2F;li&gt;
+&lt;li&gt;Instead of solving for full optimality, we can reduce the solution space so that
+we reach convergence quicker. We do this by picking the hottest node and the 
+largest contributing shard in it, then finding a new host for it. &lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;With this background, we are well-placed to solve the problem of shard placement. Before,
+we devise our solution, we must look into how others are solving the same.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;related-work&quot;&gt;Related Work&lt;a class=&quot;zola-anchor&quot; href=&quot;#related-work&quot; aria-label=&quot;Anchor link for: related-work&quot;&gt;§&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;We will go over some important work done in this space and learn from them.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;google-slicer&quot;&gt;Google Slicer&lt;a class=&quot;zola-anchor&quot; href=&quot;#google-slicer&quot; aria-label=&quot;Anchor link for: google-slicer&quot;&gt;§&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;Slicer measures imbalance (ratio
+of the max task load to mean load) to trigger remediation and uses the amount of key churn as a
+damping factor. Slicer dissipates heat by greedily moving shards off the hot host, adding more
+replicas, merging (to drive the utilization up), or splitting shards in a loop until the key
+churn budget is hit. Moves have cost on the new node as it has to hydrate the data from somewhere
+while serving queries. Slicer tries to not make any moves if the CPU utilization is low.&lt;&#x2F;p&gt;
+&lt;p&gt;Slicer takes little to no input from the applications that use this service.
+It has quite an opinionated approach to constraints, the notion of imbalance,
+and the goals it optimizes for. Slicer does not take into account task
+heterogeneity. The paper says that the CPU is a good proxy for it. It also uses
+arbitrary constants for what low CPU means and how much more budget to expend.
+I am unsure, how much adoption it got since its inception. Slicer most likely does
+not consider application-specific metrics for heat balancing as the paper does
+not mention it.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;microsoft-service-fabric&quot;&gt;Microsoft Service Fabric&lt;a class=&quot;zola-anchor&quot; href=&quot;#microsoft-service-fabric&quot; aria-label=&quot;Anchor link for: microsoft-service-fabric&quot;&gt;§&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;The PLB component of MSF uses system metrics, application metrics, and also per-request peculiarities to balance the load. The service uses simulated annealing to
+minimize the total cluster energy, where the energy function is user provided.
+The most commonly used function is the average standard deviation of all the
+metrics. The load-balancing algorithm starts by setting a timer and generating
+a random move. If the new state has lower energy than the current, it makes the
+move. If the new state has a higher energy than the current, it jumps with a
+probability of $$e^-\frac{T_{new} - T_{current}}{T_{current}}$$.&lt;&#x2F;p&gt;
+&lt;p&gt;It uses Simulated Annealing as it is faster compared to other options. The services
+is highly configurable and takes inputs from the users.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;facebook-shard-manager&quot;&gt;Facebook Shard Manager&lt;a class=&quot;zola-anchor&quot; href=&quot;#facebook-shard-manager&quot; aria-label=&quot;Anchor link for: facebook-shard-manager&quot;&gt;§&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;Facebook has been working on this problem and their PLB service supports the largest
+scale and is widely adopted across the company. It uses a general-purpose constraint
+solver. The PLB consumes user-provided metrics and goals. Facebook applies domain-specific
+heuristics to reduce the search space for the solution by picking the hottest node and the
+biggest offender in it and finding it a new home. It also sufficiently prunes the
+destination candidates to arrive at the solution quickly.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;linkedin-helix&quot;&gt;LinkedIn Helix&lt;a class=&quot;zola-anchor&quot; href=&quot;#linkedin-helix&quot; aria-label=&quot;Anchor link for: linkedin-helix&quot;&gt;§&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;Helix is an open-source project library that solves the same problem. It has a cleanly
+segregated constraints module where the valid state transitions of shards and
+replicas are modeled and an optimization module. The paper addresses count-based balancing
+which tells me there is a hidden assumption that all shards are equal. This assumption
+might be a big limitation depending on the usage. &lt;&#x2F;p&gt;
+&lt;h2 id=&quot;decision-points&quot;&gt;Decision Points&lt;a class=&quot;zola-anchor&quot; href=&quot;#decision-points&quot; aria-label=&quot;Anchor link for: decision-points&quot;&gt;§&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Before I embark on the journey to build a general-purpose PLB service, I want to go over
+some of the learnings based on the survey:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Make your users happy. Make it configurable.&lt;&#x2F;li&gt;
+&lt;li&gt;Take short and quick steps rather than making big changes.&lt;&#x2F;li&gt;
+&lt;li&gt;Take into account the system churn that the new arrangement will bring in additions to the
+expected steady state it hopes to achieve.&lt;&#x2F;li&gt;
+&lt;li&gt;Don&#x27;t react too fast. Distinguish between the churn from re-arrangement versus the load
+from work-load changes. If the load is from re-arrangement, wait for the dust to settle down.
+If the churn is from the workload changes cancel the plan and re-evaluate.&lt;&#x2F;li&gt;
+&lt;li&gt;Different actions have different costs. Moving a primary to a new node is costly. See if you
+can reduce the churn by flipping the primary&#x2F;secondary roles. Again, do not hard code these,
+make them configurable, use move weights to choose a move.&lt;&#x2F;li&gt;
+&lt;li&gt;I want to be able to signal that the overall host count needs to grow or shrink in addition to
+rearrangements.&lt;&#x2F;li&gt;
+&lt;li&gt;Use a constraint solver. Some tools can solve it generally and efficiently. Otherwise,
+over time adding new goals over the existing ones will be difficult and error-prone.&lt;&#x2F;li&gt;
+&lt;li&gt;This will be a complicated system. The system should be able to explain why it proposed what
+it proposed.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;plb-design&quot;&gt;PLB Design&lt;a class=&quot;zola-anchor&quot; href=&quot;#plb-design&quot; aria-label=&quot;Anchor link for: plb-design&quot;&gt;§&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;img src=&quot;..&#x2F;plb.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; last_plan_is_being_executed {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; This means the last plan is in progress or the cool_off_timer_hasn&amp;#39;t run out.
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; the_system_is_approaching_towards_goal {
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; the last plan seems to be successful. We wait.
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;return
+&lt;&#x2F;span&gt;&lt;span&gt;    } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; The last plan is in progress but it does not seem to be working.
+&lt;&#x2F;span&gt;&lt;span&gt;      cancel_last_plan
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; The system must stabilize before we start acting. We give it that time.
+&lt;&#x2F;span&gt;&lt;span&gt;      start_the_cool_off_timer
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;return
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;  } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;else if&lt;&#x2F;span&gt;&lt;span&gt; cool&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;off&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;timer&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;has&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;ways&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;to&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;go {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; Wait for the timer to run out
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;return
+&lt;&#x2F;span&gt;&lt;span&gt;  }
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span&gt;(host_stats) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;derive_assignments_from_metrics&lt;&#x2F;span&gt;&lt;span&gt;(metrics)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; The violator list is ordered, biggest violator first.
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span&gt;(high_water_mark_violators&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; low_water_mark_violators&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; optimal_hosts) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;find_violators&lt;&#x2F;span&gt;&lt;span&gt;(host_stats)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; timer &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;timer&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; move_budget &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;reset_move_budget&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; plan &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;init_plan&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;  
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; high_water_mark_violators {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#59c2ff;&quot;&gt;&amp;#39;l1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span&gt; host &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;in&lt;&#x2F;span&gt;&lt;span&gt; high_water_mark_violators {
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span&gt; shard &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;in &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;find_offending_shard&lt;&#x2F;span&gt;&lt;span&gt;(host) {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; budget &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;&amp;amp;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt; timer {
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span&gt;(dest_host&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;move&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; solve (shard&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; low_water_mark_violators&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; optimal_hosts)
+&lt;&#x2F;span&gt;&lt;span&gt;        
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; dest_host {
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;update_stats&lt;&#x2F;span&gt;&lt;span&gt;(host&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; shard&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; high_water_mark_violators&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; low_water_mark_violators&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; optimal_hosts)
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;update_plan&lt;&#x2F;span&gt;&lt;span&gt;(plan&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;move&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;update_budget&lt;&#x2F;span&gt;&lt;span&gt;(move_budget)
+&lt;&#x2F;span&gt;&lt;span&gt;          } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; Grow the fleet by preferring the hosts that are waiting for shards to be drained.
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; Then provision new hosts.
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;grow_fleet&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;          }
+&lt;&#x2F;span&gt;&lt;span&gt;        } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; We have triggered enough moves for now.
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; Time to let the system stabilize.
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;break &amp;#39;l1
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;      }
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;  } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;else if&lt;&#x2F;span&gt;&lt;span&gt; low_water_mark_violators {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#59c2ff;&quot;&gt;&amp;#39;l1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span&gt; host &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;in&lt;&#x2F;span&gt;&lt;span&gt; low_water_mark_violators {
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span&gt; shard &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;in&lt;&#x2F;span&gt;&lt;span&gt; host&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;assignments {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; budget &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;&amp;amp;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt; timer {
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span&gt;(dest_host&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;move&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; solve (shard&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; low_water_mark_violators&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; optimal_hosts)
+&lt;&#x2F;span&gt;&lt;span&gt;        
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; dest_host {
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;update_stats&lt;&#x2F;span&gt;&lt;span&gt;(host&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; shard&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; high_water_mark_violators&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; low_water_mark_violators&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; optimal_hosts)
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;update_plan&lt;&#x2F;span&gt;&lt;span&gt;(plan&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;move&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;update_budget&lt;&#x2F;span&gt;&lt;span&gt;(move_budget)
+&lt;&#x2F;span&gt;&lt;span&gt;          } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; we could not find a host that can take this assignment without
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; violating the goal.
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;break&lt;&#x2F;span&gt;&lt;span&gt; l1&lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;          }
+&lt;&#x2F;span&gt;&lt;span&gt;        } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; We have triggered enough moves for now.
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; Time to let the system stabilize.
+&lt;&#x2F;span&gt;&lt;span&gt;          &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;break &amp;#39;l1
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;      }
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; update the plan to terminate the host once all their shards drained
+&lt;&#x2F;span&gt;&lt;span&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f07178;&quot;&gt;update_plan&lt;&#x2F;span&gt;&lt;span&gt;(host&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; plan)
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;  } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F; All hosts meet goal. No action required.
+&lt;&#x2F;span&gt;&lt;span&gt;  }
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;parting-thoughts&quot;&gt;Parting Thoughts&lt;a class=&quot;zola-anchor&quot; href=&quot;#parting-thoughts&quot; aria-label=&quot;Anchor link for: parting-thoughts&quot;&gt;§&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;In this post we discussed the problem of placement and load balancing. We surveyed the
+litrature on the problem and based on them we devised our own algorithm. In the next post we will convert
+the algorithm into code. &lt;&#x2F;p&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;a class=&quot;zola-anchor&quot; href=&quot;#references&quot; aria-label=&quot;Anchor link for: references&quot;&gt;§&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;research.facebook.com&#x2F;file&#x2F;245575980870853&#x2F;Shard-Manager-A-Generic-Shard-Management-Framework-for-Geo-distributed-Applications.pdf&quot;&gt;FB Shard Manager&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;shegufta.com&#x2F;wp-content&#x2F;uploads&#x2F;2018&#x2F;06&#x2F;SF-Microsoft-Service-Fabric.pdf&quot;&gt;Microsoft Service Fabric&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;storage.googleapis.com&#x2F;pub-tools-public-publication-data&#x2F;pdf&#x2F;6ab47d296798a93296a159360aef7e8b5849dd77.pdf&quot;&gt;Google Slicer&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;engineering.linkedin.com&#x2F;apache-helix&#x2F;apache-helix-framework-distributed-system-development&quot;&gt;LinkedIn Helix&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.usenix.org&#x2F;system&#x2F;files&#x2F;osdi20-suresh.pdf&quot;&gt;DMC&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;dl.acm.org&#x2F;doi&#x2F;abs&#x2F;10.1145&#x2F;3190508.3190542&quot;&gt;Popular is cheaper&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>On Structures and Transforms</title>
+        <published>2023-01-03T00:00:00+00:00</published>
+        <updated>2023-01-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://distributedrandomness.com/on-structures-and-transforms-part1/" type="text/html"/>
+        <id>https://distributedrandomness.com/on-structures-and-transforms-part1/</id>
+        <content type="html">&lt;p&gt;Patterns are powerful, and luckyly as humans we are quite good at recognizing them. Patters help us
+identify things we already know, but the fascinating part is that they help us make predictions about
+the unknown. The second one is the fascinating part. We use it all the time. Predicting what someone
+might mean from their facial expression when you do not understand the language. We have all had this
+experience when we visit a foreign country. Predicting the product of an organic reaction based on
+others we have seen before. This is also how we try to debug a looming problem at work. We try to dr-
+aw parallel to something we have seen before, to predict the behavior of what&#x27;s in front of us. The
+fundamental the pattern, or theory, the more application of it we will find.&lt;&#x2F;p&gt;
+&lt;p&gt;Such a fundamental theory in mathematics is Set Theory. It is so fundametal that when the Logicians
+set out to express the entiriety of mathematics in logic, they relied on it. But in here, we will
+discuss something else that is equally fundamental if not more so - &lt;em&gt;Category Theory&lt;&#x2F;em&gt;. Being one of
+those fundamental theories, it has found applications in Psychology, Quantum Mechanics, Control
+Theory, and for our purpose, Computer Science.&lt;&#x2F;p&gt;
+&lt;p&gt;Category Theory might be a totally alien concept for you as it used to be for me, a few weeks back.
+In the upcoming multi-part blog posts, I would like to explore Category Theory with you. But before
+we go there, in this post, I would like to lay the structure of how the content will be organized.&lt;&#x2F;p&gt;
+&lt;p&gt;I feel that there are three stages to learning a new concept and then becoming proficient in it. The
+stages are&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;survey&lt;&#x2F;li&gt;
+&lt;li&gt;recognition&lt;&#x2F;li&gt;
+&lt;li&gt;using&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The ** Survey ** stage is about starting to know the domain. Here, you go over introductory material
+about your topic of choice. The mode of consumption can be blogs, short write ups, books and published
+survey papers. I preference is usually books or survey papers. In case I have not come accross any,
+I will search the internet to see if people have recommendations of books on the topic. I love buying
+books and therefore, if too many people have recommended a book or two, then I will buy them and devour
+them. Then usually those books will refer to other books or seminal papers on the topic, and I will
+follow the trail. On the first reading of the book, the goal is not to understand everything, in fact
+the goal is to only skim the material to know what the experts talk about when they talk about it.
+I am just looking to remember the keywords if anything. Once I have gone over 4 or 5 books on the topic,
+I am starting to pick favorites. For the second readin, I will pick the book that appealed to me the
+most and read it cover to cover. The goal is to get 60 to 70 percent of the material. Remember the 
+keywords we noted during the skimming phase, some of them should staring making sense now. The goal
+is to have a soliloquy explaining some of the terms or the keywords. I will do the same with the
+other books, go over them. Authors have different writing styles and each treat the subject matter
+a little differently. No one book is better than all others, just different. Therefore, you must read
+more than one text on the topic as each will provide a slightly different intuition than all others.&lt;&#x2F;p&gt;
+&lt;p&gt;The first blog will be dedicated to survey. We will go over the fundamental concepts in category theory
+and I will try to provide you analogies for each of them. I will skip the maths but instead I will refer
+you to books that I think have done an excellent job at that.&lt;&#x2F;p&gt;
+&lt;p&gt;Once the things start making sense to you, it is time to train your eyes to see it all around you.
+This can take some time and I would argue that we should always keep doing this. One can never get
+too good at it. This is also hard and can be frustrating at times. The posts targed to aid in this
+endevour, will contain examples and applications of category theory in type theory, language design,
+reasoning about concurrency. We will also touch on some applications in Control Theory and Quantum
+Mechanics for completeness. We will discuss some seminal papers that introduced this concept in 
+Computer Science and also some papers from the recent research.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>This is a test Page</title>
+        <published>2023-01-03T00:00:00+00:00</published>
+        <updated>2023-01-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://distributedrandomness.com/test-page/" type="text/html"/>
+        <id>https://distributedrandomness.com/test-page/</id>
+        <content type="html">&lt;p&gt;This blog is under construction.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#0f1419;color:#bfbab0;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F;&#x2F; [peek]: BinaryHeap::peek
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#5c6773;&quot;&gt;&#x2F;&#x2F;&#x2F; [peek\_mut]: BinaryHeap::peek_mut
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;#&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffb454;&quot;&gt;stable&lt;&#x2F;span&gt;&lt;span&gt;(feature &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;rust1&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; since &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;1.0.0&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;#&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffb454;&quot;&gt;cfg_attr&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffb454;&quot;&gt;not&lt;&#x2F;span&gt;&lt;span&gt;(test)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; rustc_diagnostic_item &lt;&#x2F;span&gt;&lt;span style=&quot;color:#f29668;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#c2d94c;&quot;&gt;&amp;quot;BinaryHeap&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#ff7733;&quot;&gt;pub struct &lt;&#x2F;span&gt;&lt;span style=&quot;color:#59c2ff;&quot;&gt;BinaryHeap&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;T&amp;gt; {
+&lt;&#x2F;span&gt;&lt;span&gt;    data&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bfbab0cc;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#39bae6;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;T&amp;gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;}        
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;$$
+f(x) = \int_{-\infty}^\infty\hat f(\xi),e^{2 \pi i \xi x},d\xi
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} = 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}} {1+\frac{e^{-8\pi}} {1+\cdots} } } }
+$$&lt;&#x2F;p&gt;
+</content>
+    </entry>
+</feed>

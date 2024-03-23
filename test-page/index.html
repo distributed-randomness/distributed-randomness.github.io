@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <title>This is a test Page - Blitzerr</title>
+    
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1"><meta name="description" content="My musings on random things, especially disributed systems This is a test Page "/>
+    <meta property="og:title" content="Distributed Randomness -&nbsp;This is a test Page" />
+    <meta property="og:type" content="website"/><meta property="og:url" content="https:&#x2F;&#x2F;distributedrandomness.com&#x2F;test-page&#x2F;"/><meta property="og:description" content="My musings on random things, especially disributed systems"/>
+    <link rel="preload" href="https://distributedrandomness.com/assets/fonts/FiraCode-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="https://distributedrandomness.com/assets/fonts/FiraCode-Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://distributedrandomness.com/style.css?h=acde0e5dd3585808bfd1">
+    <link rel="stylesheet" href="https://distributedrandomness.com/color/green.css?h=c685075d8d57bb1e0d87">
+<link rel="alternate" type="application/atom+xml" title="Distributed Randomness RSS" href="https://distributedrandomness.com/atom.xml">
+  
+
+  <link rel="stylesheet" href="https://distributedrandomness.com/assets/katex/katex.min.css">
+
+  <script defer type="text/javascript" src="https://distributedrandomness.com/assets/katex/katex.min.js"></script>
+  <script defer type="text/javascript" src="https://distributedrandomness.com/assets/katex/mathtex-script-type.min.js"></script>
+
+  <script defer src="https://distributedrandomness.com/assets/katex/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+				delimiters: [
+					{left: '$$', right: '$$', display: true},
+					{left: '$', right: '$', display: false},
+					{left: '\\(', right: '\\)', display: false},
+					{left: '\\[', right: '\\]', display: true}
+				]
+			});"></script>
+
+
+  </head>
+    <body>
+        <div class="container center">
+<header class="header">
+    <div class="header__inner">
+        <div class="header__logo">
+            <a href="&#x2F;">
+    <div class="logo">
+        Distributed Randomness
+    </div>
+</a>
+        </div>
+        <div class="menu-trigger">menu</div>
+    </div>
+    
+    <nav class="menu">
+        <ul class="menu__inner menu__inner--desktop">
+            
+            
+                    <li>
+                        <a href="
+    
+        https://distributedrandomness.com/about
+    
+">about</a>
+                    </li>
+                
+                    <li>
+                        <a href="
+    
+        https://distributedrandomness.com/contact
+    
+">contact</a>
+                    </li>
+                
+                    <li>
+                        <a href="
+    
+        https://distributedrandomness.com/conf-sched/2024
+    
+">conferences</a>
+                    </li>
+                <ul class="menu__sub-inner">
+                        <li class="menu__sub-inner-more-trigger">show more ▾</li>
+                        <ul class="menu__sub-inner-more hidden">
+                            
+        <li>
+            <a href="
+    
+        https://distributedrandomness.com/conf-sched/2023
+    
+">2023-conferences</a>
+        </li>
+                        </ul>
+                    </ul>
+            </ul>
+
+        <ul class="menu__inner menu__inner--mobile">
+            
+        <li>
+            <a href="
+    
+        https://distributedrandomness.com/about
+    
+">about</a>
+        </li>
+        <li>
+            <a href="
+    
+        https://distributedrandomness.com/contact
+    
+">contact</a>
+        </li>
+        <li>
+            <a href="
+    
+        https://distributedrandomness.com/conf-sched/2024
+    
+">conferences</a>
+        </li>
+        <li>
+            <a href="
+    
+        https://distributedrandomness.com/conf-sched/2023
+    
+">2023-conferences</a>
+        </li>
+        </ul>
+    </nav>
+
+    </header>
+<div class="content"><article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https:&#x2F;&#x2F;distributedrandomness.com&#x2F;test-page&#x2F;">This is a test Page</a>
+            </h1>
+            
+    <div class="post-meta">
+        <span class="post-date">2023.01.03
+                </span>
+
+        <span class="post-author"></span>
+
+        
+
+    
+    </div>
+
+            
+    
+
+
+</header><p>This blog is under construction.</p>
+<pre data-lang="rust" style="background-color:#0f1419;color:#bfbab0;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="font-style:italic;color:#5c6773;">/// [peek]: BinaryHeap::peek
+</span><span style="font-style:italic;color:#5c6773;">/// [peek\_mut]: BinaryHeap::peek_mut
+</span><span style="color:#bfbab0cc;">#</span><span>[</span><span style="color:#ffb454;">stable</span><span>(feature </span><span style="color:#f29668;">= </span><span style="color:#c2d94c;">&quot;rust1&quot;</span><span style="color:#bfbab0cc;">,</span><span> since </span><span style="color:#f29668;">= </span><span style="color:#c2d94c;">&quot;1.0.0&quot;</span><span>)]
+</span><span style="color:#bfbab0cc;">#</span><span>[</span><span style="color:#ffb454;">cfg_attr</span><span>(</span><span style="color:#ffb454;">not</span><span>(test)</span><span style="color:#bfbab0cc;">,</span><span> rustc_diagnostic_item </span><span style="color:#f29668;">= </span><span style="color:#c2d94c;">&quot;BinaryHeap&quot;</span><span>)]
+</span><span style="color:#ff7733;">pub struct </span><span style="color:#59c2ff;">BinaryHeap</span><span>&lt;T&gt; {
+</span><span>    data</span><span style="color:#bfbab0cc;">: </span><span style="font-style:italic;color:#39bae6;">Vec</span><span>&lt;T&gt;,
+</span><span>}        
+</span></code></pre>
+<p>$$
+f(x) = \int_{-\infty}^\infty\hat f(\xi),e^{2 \pi i \xi x},d\xi
+$$</p>
+<p>$$
+\frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} = 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}} {1+\frac{e^{-8\pi}} {1+\cdots} } } }
+$$</p>
+
+
+        
+    
+
+        
+        
+    </article></div>
+    <div class="pagination">
+        <div class="pagination__buttons">
+            </div>
+    </div>
+<footer class="footer">
+                    <div class="footer__inner"><div class="copyright">
+            <span>© 2024 Blitzerr::</a></span>
+            <span> >> Opinions Are My Own << </a></span>
+        </div>
+    <script type="text/javascript" src="https://distributedrandomness.com/assets/js/main.js"></script>
+</div>
+                    
+
+                </footer></div>
+    </body>
+</html>
